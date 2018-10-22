@@ -6,7 +6,7 @@ import 'normalize.css/normalize.css'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import './style/index.scss'
-
+//test work computer can commit
 Vue.use(ElementUI)
 
 Vue.config.productionTip = false
