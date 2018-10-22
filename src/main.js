@@ -5,7 +5,7 @@ import store from './store'
 import 'normalize.css/normalize.css'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
-// test conflict
+import './style/index.scss'
 
 Vue.use(ElementUI)
 
