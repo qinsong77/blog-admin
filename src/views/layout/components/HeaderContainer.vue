@@ -1,5 +1,5 @@
 <template>
-    <header class="header-bar">
+    <header class="header-bar" :style="{width:computeWidth}">
         <div>
             <i class="header-collapse-trigger iconfont"
                @click="handleSidebar"
@@ -37,6 +37,11 @@ export default {
   props: {
     isCollapse: Boolean
   },
+  computed: {
+    computeWidth () {
+      return this.isCollapse ? 'calc(100% - 64px)' : 'calc(100% - 200px)'
+    }
+  },
   methods: {
     handleSidebar () {
       this.$emit('EmitCollapse')
@@ -53,6 +58,10 @@ export default {
 
 <style lang="scss">
     .header-bar{
+        transition: width .2s cubic-bezier(.23,1,.32,1);
+        position: fixed;
+        top: 0;
+        right: 0;
         height: 64px;
         background: white;
         display: flex;

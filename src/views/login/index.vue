@@ -34,8 +34,8 @@
 <script>
 import { isvalidUsername } from '_com/validate'
 import { setToken } from '_com/auth'
-require('particles.js')
 import config from './config/default'
+require('particles.js')
 export default {
   name: 'index',
   data () {
@@ -65,16 +65,18 @@ export default {
       loading: false
     }
   },
-    mounted () {
-        // 初始化例子插件
-        particlesJS('login', config)
-    },
-    beforeDestroy () {
-        if (pJSDom && pJSDom.length > 0) {
-            pJSDom[0].pJS.fn.vendors.destroypJS()
-            pJSDom = []
-        }
-    },
+  mounted () {
+    // 初始化例子插件
+    // eslint-disable-next-line
+    particlesJS('login', config)
+  },
+  beforeDestroy () {
+    /* eslint-disable */
+    if (pJSDom && pJSDom.length > 0) {
+      pJSDom[0].pJS.fn.vendors.destroypJS()
+      pJSDom = []
+    }
+  },
   methods: {
     handleLogin () {
       this.$refs.loginForm.validate(valid => {

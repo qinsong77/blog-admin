@@ -3,22 +3,21 @@
 </template>
 
 <script>
-    export default {
-        name: "mangerArticles",
-        data() {
-            return {}
-        },
-        computed: {},
+export default {
+  name: 'mangerArticles',
+  data () {
+    return {}
+  },
+  computed: {},
 
-        created() {
-        },
+  created () {
+  },
 
-        mounted() {
-        },
+  mounted () {
+  },
 
-
-        methods: {}
-    }
+  methods: {}
+}
 </script>
 
 <style>

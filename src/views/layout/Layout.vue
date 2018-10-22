@@ -3,7 +3,7 @@
         <nav>
             <slidebar :is-collapse="isCollapse"/>
         </nav>
-        <div class="main-wrapper">
+        <div class="main-wrapper" :style="{ 'padding-left':isCollapse ?'64px':'200px'}">
             <header-container  :is-collapse="isCollapse" @EmitCollapse="EmitCollapse"/>
             <section>
                 <div class="main-container">
@@ -41,6 +41,7 @@ export default {
         flex: auto;
         background: #f0f2f5;
         min-height: 100vh;
+        transition: padding-left .2s cubic-bezier(.23,1,.32,1);
         .main-wrapper{
             display: flex;
             flex-direction: column;
@@ -49,6 +50,7 @@ export default {
             overflow-x: hidden;
             .main-container{
                 margin: 24px 24px 0;
+                padding-top: 64px;
             }
         }
     }
