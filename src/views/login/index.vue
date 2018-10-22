@@ -1,5 +1,6 @@
 <template>
-    <div class="login">
+    <div class="login" @keyup.enter="handleLogin">
+        <div class="layer bg" id="login"></div>
         <p class="login-title">Sysuke Blog Admin</p>
         <p class="login-title-sub">this is my blog admin</p>
         <el-card class="login-card">
@@ -33,7 +34,8 @@
 <script>
 import { isvalidUsername } from '_com/validate'
 import { setToken } from '_com/auth'
-
+require('particles.js')
+import config from './config/default'
 export default {
   name: 'index',
   data () {
@@ -63,6 +65,16 @@ export default {
       loading: false
     }
   },
+    mounted () {
+        // 初始化例子插件
+        particlesJS('login', config)
+    },
+    beforeDestroy () {
+        if (pJSDom && pJSDom.length > 0) {
+            pJSDom[0].pJS.fn.vendors.destroypJS()
+            pJSDom = []
+        }
+    },
   methods: {
     handleLogin () {
       this.$refs.loginForm.validate(valid => {
@@ -82,10 +94,16 @@ export default {
 
 <style lang="scss">
     .login {
-        background: url("https://gw.alipayobjects.com/zos/rmsportal/TVYTbAXWheQpRcWDaDMu.svg") no-repeat center center;
         width: 100%;
         height: 100%;
         text-align: center;
+        background: #f0f2f5;
+        // 层
+        .layer {
+            position: absolute;
+            height: 100%;
+            width: 100%;
+        }
         > .login-title {
             padding-top: 10%;
             color: $text-b;
@@ -102,4 +120,10 @@ export default {
             margin: 0 auto;
         }
     }
+    /*@media (min-width: 768px){*/
+        /*.login{*/
+            /*background: url("https://gw.alipayobjects.com/zos/rmsportal/TVYTbAXWheQpRcWDaDMu.svg") no-repeat center center;*/
+        /*}*/
+    /*}*/
+
 </style>

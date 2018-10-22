@@ -4,43 +4,33 @@
             <span class="logo">S</span>
             <span class="logo-title" v-show="!isCollapse">Sysuke Admin</span>
         </div>
-        <el-menu default-active="1-4-1" class="el-menu-vertical-demo"  :collapse="isCollapse">
-            <el-submenu index="1">
-                <template slot="title">
-                    <i class="el-icon-location"></i>
-                    <span slot="title">导航一</span>
+        <el-menu default-active="dashboard"  :collapse="isCollapse" router>
+            <template v-for="(menu,index) in menus">
+                <template v-if="!menu.hide && menu.children.length">
+                    <el-menu-item  :index="menu.redirect" v-if="menu.children.length === 1 ">
+                        <i :class="[menu.children[0].meta.icon]"></i>
+                        <span slot="title">{{menu.children[0].meta.title}}</span>
+                    </el-menu-item>
+                    <el-submenu :index="menu.redirect"  v-else>
+                        <template slot="title">
+                            <i :class="[menu.meta.icon]"></i>
+                            <span slot="title">{{menu.meta.title}}</span>
+                        </template>
+                        <template v-for="(sub,subIndex) in menu.children">
+                            <el-menu-item  :index="menu.path+'/'+sub.path">
+                                <i :class="[sub.meta.icon]"></i>
+                                <span slot="title">{{sub.meta.title}}</span>
+                            </el-menu-item>
+                        </template>
+                    </el-submenu>
                 </template>
-                <el-menu-item-group>
-                    <span slot="title">分组一</span>
-                    <el-menu-item index="1-1">选项1</el-menu-item>
-                    <el-menu-item index="1-2">选项2</el-menu-item>
-                </el-menu-item-group>
-                <el-menu-item-group title="分组2">
-                    <el-menu-item index="1-3">选项3</el-menu-item>
-                </el-menu-item-group>
-                <el-submenu index="1-4">
-                    <span slot="title">选项4</span>
-                    <el-menu-item index="1-4-1">选项1</el-menu-item>
-                    <el-menu-item index="1-4-2">选项2</el-menu-item>
-                </el-submenu>
-            </el-submenu>
-            <el-menu-item index="2">
-                <i class="el-icon-menu"></i>
-                <span slot="title">导航二</span>
-            </el-menu-item>
-            <el-menu-item index="3" disabled>
-                <i class="el-icon-document"></i>
-                <span slot="title">导航三</span>
-            </el-menu-item>
-            <el-menu-item index="4">
-                <i class="el-icon-setting"></i>
-                <span slot="title">导航四</span>
-            </el-menu-item>
+            </template>
         </el-menu>
     </div>
 </template>
 
 <script>
+import menus from '@/router/routes'
 export default {
   name: 'slidebar',
   props: {
@@ -49,6 +39,11 @@ export default {
       type: Boolean
     }
   },
+  data(){
+      return {
+          menus:menus
+      }
+    },
   computed: {
     computeWidth () {
       return this.isCollapse ? '64px' : '200px'
@@ -59,13 +54,14 @@ export default {
 
 <style lang="scss">
     .sidebar-container{
-        transition: width .2s cubic-bezier(.23,1,.32,1);
-        background: white;
-        flex: 0 0 200px;
         max-width: 200px;
         min-width: 64px;
         width: 200px;
         min-height: 100vh;
+        height: 100%;
+        transition: width .2s cubic-bezier(.23,1,.32,1);
+        background: white;
+        flex: 0 0 200px;
         box-shadow: 2px 0 8px 0 rgba(29, 35, 41, 0.05);
         position: relative;
         z-index: 10;
