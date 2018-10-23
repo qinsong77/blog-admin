@@ -1,5 +1,5 @@
 <template>
-    <div class="main markdown">
+    <div class="main-icon">
         <p class="title">IconFont 图标</p>
         <ul class="icon_lists clear">
 
@@ -737,7 +737,7 @@
 
             <li>
                 <i class="icon iconfont icon-insurance"></i>
-                <div class="name">insurance </div>
+                <div class="name">insurance</div>
                 <div class="fontclass">.icon-insurance</div>
             </li>
 
@@ -3218,38 +3218,40 @@ export default {
 </script>
 
 <style lang="scss">
-    .main>.title{
-        font-size: 20px;
-        margin: 20px;
-        text-align: center;
-    }
-    .icon_lists{
-        width: 100% !important;
+    .main-icon {
+        .title {
+            font-size: 20px;
+            margin: 20px;
+            text-align: center;
+        }
+        .icon_lists {
+            width: 100% !important;
 
-    }
+        }
 
-    .icon_lists li{
-        float:left;
-        width: 100px;
-        height:180px;
-        text-align: center;
-        list-style: none !important;
-    }
-    .icon_lists .icon{
-        font-size: 35px;
-        line-height: 100px;
-        margin: 10px 0;
-        color:#333;
-        -webkit-transition: font-size 0.25s ease-out 0s;
-        -moz-transition: font-size 0.25s ease-out 0s;
-        transition: font-size 0.25s ease-out 0s;
+        .icon_lists li {
+            float: left;
+            width: 100px;
+            height: 180px;
+            text-align: center;
+            list-style: none !important;
+        }
+        .icon_lists .icon {
+            font-size: 35px;
+            line-height: 100px;
+            margin: 10px 0;
+            color: #3ea0d1;
+            -webkit-transition: font-size 0.25s ease-out 0s;
+            -moz-transition: font-size 0.25s ease-out 0s;
+            transition: font-size 0.25s ease-out 0s;
 
-    }
-    .name{
-        font-size: 14px;
-    }
-    .icon_lists .icon:hover{
-        font-size: 80px;
+        }
+        .name {
+            font-size: 14px;
+        }
+        .icon_lists .icon:hover {
+            font-size: 80px;
+        }
     }
 
 </style>
