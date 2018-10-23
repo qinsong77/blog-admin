@@ -24,7 +24,9 @@
                     </el-input>
                 </el-form-item>
                 <el-form-item>
-                    <el-button :loading="loading" type="primary" style="width: 100%;margin-top: 15px" @click.native.prevent="handleLogin">登录</el-button>
+                    <el-button :loading="loading" type="primary" style="width: 100%;margin-top: 15px"
+                               @click.native.prevent="handleLogin">登录
+                    </el-button>
                 </el-form-item>
             </el-form>
         </el-card>
@@ -32,66 +34,67 @@
 </template>
 
 <script>
-import { isvalidUsername } from '_com/validate'
-import { setToken } from '_com/auth'
-import config from './config/default'
-require('particles.js')
-export default {
-  name: 'index',
-  data () {
-    const validateUsername = (rule, value, callback) => {
-      if (!isvalidUsername(value)) {
-        callback(new Error('Please enter the correct user name'))
-      } else {
-        callback()
-      }
-    }
-    const validatePassword = (rule, value, callback) => {
-      if (value.length < 6) {
-        callback(new Error('The password can not be less than 6 digits'))
-      } else {
-        callback()
-      }
-    }
-    return {
-      loginForm: {
-        username: 'admin',
-        password: '1111111'
-      },
-      loginRules: {
-        username: [{ required: true, trigger: 'blur', validator: validateUsername }],
-        password: [{ required: true, trigger: 'blur', validator: validatePassword }]
-      },
-      loading: false
-    }
-  },
-  mounted () {
-    // 初始化例子插件
-    // eslint-disable-next-line
-    particlesJS('login', config)
-  },
-  beforeDestroy () {
-    /* eslint-disable */
-    if (pJSDom && pJSDom.length > 0) {
-      pJSDom[0].pJS.fn.vendors.destroypJS()
-      pJSDom = []
-    }
-  },
-  methods: {
-    handleLogin () {
-      this.$refs.loginForm.validate(valid => {
-        if (valid) {
-          this.loading = true
-          setToken(this.loginForm.username)
-          this.$router.push({ path: '/' })
+  import { isvalidUsername } from '_com/validate'
+  import { setToken } from '_com/auth'
+  import config from './config/default'
+
+  require('particles.js')
+  export default {
+    name: 'index',
+    data () {
+      const validateUsername = (rule, value, callback) => {
+        if (!isvalidUsername(value)) {
+          callback(new Error('Please enter the correct user name'))
         } else {
-          console.log('error submit!!')
-          return false
+          callback()
         }
-      })
+      }
+      const validatePassword = (rule, value, callback) => {
+        if (value.length < 6) {
+          callback(new Error('The password can not be less than 6 digits'))
+        } else {
+          callback()
+        }
+      }
+      return {
+        loginForm: {
+          username: 'admin',
+          password: '1111111'
+        },
+        loginRules: {
+          username: [{ required: true, trigger: 'blur', validator: validateUsername }],
+          password: [{ required: true, trigger: 'blur', validator: validatePassword }]
+        },
+        loading: false
+      }
+    },
+    mounted () {
+      // 初始化例子插件
+      // eslint-disable-next-line
+      particlesJS('login', config)
+    },
+    beforeDestroy () {
+      /* eslint-disable */
+      if (pJSDom && pJSDom.length > 0) {
+        pJSDom[0].pJS.fn.vendors.destroypJS()
+        pJSDom = []
+      }
+    },
+    methods: {
+      handleLogin() {
+        this.$refs.loginForm.validate(valid => {
+          if (valid) {
+            this.loading = true
+            setToken(this.loginForm.username)
+            this.$router.push({path: '/'})
+          } else {
+            console.log('error submit!!')
+            return false
+          }
+        })
+      }
     }
   }
-}
 </script>
 
 <style lang="scss">
@@ -122,10 +125,11 @@ export default {
             margin: 0 auto;
         }
     }
+
     /*@media (min-width: 768px){*/
-        /*.login{*/
-            /*background: url("https://gw.alipayobjects.com/zos/rmsportal/TVYTbAXWheQpRcWDaDMu.svg") no-repeat center center;*/
-        /*}*/
+    /*.login{*/
+    /*background: url("https://gw.alipayobjects.com/zos/rmsportal/TVYTbAXWheQpRcWDaDMu.svg") no-repeat center center;*/
+    /*}*/
     /*}*/
 
 </style>

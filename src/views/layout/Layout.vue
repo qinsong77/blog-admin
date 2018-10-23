@@ -15,23 +15,23 @@
 </template>
 
 <script>
-import Slidebar from './components/slidebar'
-import HeaderContainer from './components/HeaderContainer'
-export default {
-  name: 'Layout',
-  components: { Slidebar, HeaderContainer },
-  data () {
-    return {
-      isCollapse: false
-    }
-  },
+  import Slidebar from './components/slidebar'
+  import HeaderContainer from './components/HeaderContainer'
+  export default {
+    name: 'Layout',
+    components: { Slidebar, HeaderContainer },
+    data () {
+      return {
+        isCollapse: false
+      }
+    },
 
-  methods: {
-    EmitCollapse () {
-      this.isCollapse = !this.isCollapse
+    methods: {
+      EmitCollapse () {
+        this.isCollapse = !this.isCollapse
+      }
     }
   }
-}
 </script>
 
 <style lang="scss">

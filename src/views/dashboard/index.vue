@@ -3,21 +3,21 @@
 </template>
 
 <script>
-export default {
-  name: 'index',
-  data () {
-    return {}
-  },
-  computed: {},
+  export default {
+    name: 'index',
+    data () {
+      return {}
+    },
+    computed: {},
 
-  created () {
-  },
+    created () {
+    },
 
-  mounted () {
-  },
+    mounted () {
+    },
 
-  methods: {}
-}
+    methods: {}
+  }
 </script>
 
 <style>
