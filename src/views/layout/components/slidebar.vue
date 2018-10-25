@@ -8,17 +8,17 @@
             <template v-for="(menu,index) in menus">
                 <template v-if="!menu.hide && menu.children.length">
                     <el-menu-item :index="menu.redirect" v-if="menu.children.length === 1 " :key="index">
-                        <i :class="[menu.children[0].meta.icon?menu.children[0].meta.icon:'icon-file','iconfont']"></i>
+                        <i :class="[menu.children[0].meta.icon ? menu.children[0].meta.icon:'icon-file','iconfont']"></i>
                         <span slot="title">{{menu.children[0].meta.title}}</span>
                     </el-menu-item>
                     <el-submenu :index="menu.redirect" v-else :key="index">
                         <template slot="title">
-                            <i :class="[menu.meta.icon?menu.meta.icon:'icon-folder','iconfont']"></i>
+                            <i :class="[menu.meta.icon ? menu.meta.icon : 'icon-folder','iconfont']"></i>
                             <span slot="title">{{menu.meta.title}}</span>
                         </template>
                         <template v-for="(sub,subIndex) in menu.children">
                             <el-menu-item :index="menu.path+'/'+sub.path" :key="subIndex">
-                                <i :class="[sub.meta.icon?sub.meta.icon:'icon-file','iconfont']"></i>
+                                <i :class="[sub.meta.icon ? sub.meta.icon:'icon-file','iconfont']"></i>
                                 <span slot="title">{{sub.meta.title}}</span>
                             </el-menu-item>
                         </template>
@@ -82,6 +82,12 @@
             width: 24px;
             text-align: center;
             font-size: 18px;
+        }
+        .el-menu-item ,.el-submenu__title{
+            height: 40px!important;
+            line-height: 40px!important; //eslint-line-disabled
+            margin-top: 4px;
+            margin-bottom: 4px;
         }
         .el-menu-item.is-active{
             background-color: #e6f7ff;

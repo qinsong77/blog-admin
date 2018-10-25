@@ -20,15 +20,27 @@ const routes = [
     path: '/icons',
     component: Layout,
     redirect: '/icons/index',
+    meta: {
+      title: '图标'
+    },
     children: [
       {
         path: 'index',
         name: 'icons',
         meta: {
           title: 'icons',
-          icon: 'icon-heatmap'
+          icon: 'icon-antdesign'
         },
         component: () => import('_v/Icon')
+      },
+      {
+        path: 'appIcons',
+        name: 'appIcons',
+        meta: {
+          title: 'appIcons',
+          icon: 'icon-appstore'
+        },
+        component: () => import('_v/Icon/AppIcon')
       }
     ]
   },
