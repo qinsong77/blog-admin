@@ -1,83 +1,106 @@
 import Layout from '_v/layout/Layout'
 
 const routes = [
-  {
-    path: '/',
-    component: Layout,
-    redirect: '/dashboard',
-    children: [
-      {
-        path: 'dashboard',
-        name: 'dashboard',
-        meta: {
-          title: 'dashboard',
-          icon: 'icon-radarchart'
-        },
-        component: () => import('_v/dashboard')
-      }
-    ]
-  }, {
-    path: '/icons',
-    component: Layout,
-    redirect: '/icons/index',
-    meta: {
-      title: '图标'
+    {
+        path: '*',
+        hide: true,
+        redirect: '/'
     },
-    children: [
-      {
-        path: 'index',
-        name: 'icons',
+    {
+        path: '/',
+        component: Layout,
+        redirect: '/dashboard',
+        children: [
+            {
+                path: 'dashboard',
+                name: 'dashboard',
+                meta: {
+                    title: 'dashboard',
+                    icon: 'icon-radarchart'
+                },
+                component: () => import('_v/dashboard')
+            }
+        ]
+    }, {
+        path: '/icons',
+        component: Layout,
+        redirect: '/icons/index',
         meta: {
-          title: 'icons',
-          icon: 'icon-antdesign'
+            title: '图标'
         },
-        component: () => import('_v/Icon')
-      },
-      {
-        path: 'appIcons',
-        name: 'appIcons',
-        meta: {
-          title: 'appIcons',
-          icon: 'icon-appstore'
-        },
-        component: () => import('_v/Icon/AppIcon')
-      }
-    ]
-  },
-  {
-    path: '/manger',
-    component: Layout,
-    redirect: '/manger/articles',
-    meta: {
-      title: '博客管理',
-      icon: 'icon-setting'
+        children: [
+            {
+                path: 'index',
+                name: 'icons',
+                meta: {
+                    title: 'AntDesign-icons',
+                    icon: 'icon-antdesign'
+                },
+                component: () => import('_v/Icon')
+            },
+            {
+                path: 'appIcons',
+                name: 'appIcons',
+                meta: {
+                    title: 'appIcons',
+                    icon: 'icon-appstore'
+                },
+                component: () => import('_v/Icon/AppIcon')
+            }
+        ]
     },
-    children: [
-      {
-        path: 'articles',
-        name: 'articles',
+    {
+        path: '/articles',
+        component: Layout,
+        redirect: '/articles/all',
         meta: {
-          title: '文章管理',
-          icon: 'icon-edit-square'
+            title: '文章管理',
+            icon: 'icon-project-fill'
         },
-        component: () => import('_v/manger/mangerArticles')
-      },
-      {
-        path: 'tags',
-        name: 'tags',
-        meta: {
-          title: '标签管理',
-          icon: 'icon-tags'
-        },
-        component: () => import('_v/manger/tags')
-      }
-    ]
-  },
-  {
-    path: '/login',
-    name: 'login',
-    hide: true,
-    component: () => import(/* webpackChunkName: "about" */ '_v/login')
-  }
+        children: [
+            {
+                path: 'all',
+                name: 'allArticles',
+                meta: {
+                    title: '所有文章',
+                    icon: 'icon-folder'
+                },
+                component: () => import('_v/articles/all')
+            },
+            {
+                path: 'category',
+                name: 'category',
+                meta: {
+                    title: '分类目录',
+                    icon: 'icon-orderedlist'
+                },
+                component: () => import('_v/articles/category')
+            },
+            {
+                path: 'post',
+                name: 'postArticle',
+                meta: {
+                    title: '发布文章',
+                    icon: 'icon-edit-square'
+                },
+                component: () => import('_v/articles/post')
+            },
+            {
+                path: 'tags',
+                name: 'tags',
+                meta: {
+                    title: '文章标签',
+                    icon: 'icon-tags'
+                },
+                component: () => import('_v/articles/tags')
+            }
+        ]
+    },
+    {
+        path: '/login',
+        name: 'login',
+        hide: true,
+        component: () => import(/* webpackChunkName: "about" */ '_v/login')
+    }
 ]
 export default routes

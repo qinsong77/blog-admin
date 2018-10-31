@@ -31,19 +31,19 @@
 </template>
 
 <script>
-  export default {
-    name: 'MsgTab',
-    data () {
-      return {
-        activeTab: 0
-      }
-    },
-    computed: {
-      computeWidth () {
-        return this.activeTab === 0 ? 'translate3d(38px, 0px, 0px)' : 'translate3d(170px, 0px, 0px)'
-      }
+    export default {
+        name: 'MsgTab',
+        data () {
+            return {
+                activeTab: 0
+            }
+        },
+        computed: {
+            computeWidth () {
+                return this.activeTab === 0 ? 'translate3d(38px, 0px, 0px)' : 'translate3d(170px, 0px, 0px)'
+            }
+        }
     }
-  }
 </script>
 
 <style lang="scss">

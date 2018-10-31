@@ -4,7 +4,7 @@
             <span class="logo">S</span>
             <span class="logo-title" v-show="!isCollapse">Sysuke Admin</span>
         </div>
-        <el-menu default-active="/dashboard" :collapse="isCollapse" router>
+        <el-menu :default-active="currentRoute" :collapse="isCollapse" router>
             <template v-for="(menu,index) in menus">
                 <template v-if="!menu.hide && menu.children.length">
                     <el-menu-item :index="menu.redirect" v-if="menu.children.length === 1 " :key="index">
@@ -30,27 +30,30 @@
 </template>
 
 <script>
-  import menus from '@/router/routes'
+    import menus from '@/router/routes'
 
-  export default {
-    name: 'slidebar',
-    props: {
-      isCollapse: {
-        default: false,
-        type: Boolean
-      }
-    },
-    data () {
-      return {
-        menus: menus
-      }
-    },
-    computed: {
-      computeWidth () {
-        return this.isCollapse ? '64px' : '200px'
-      }
+    export default {
+        name: 'slidebar',
+        props: {
+            isCollapse: {
+                default: false,
+                type: Boolean
+            }
+        },
+        data () {
+            return {
+                menus: menus
+            }
+        },
+        computed: {
+            currentRoute () {
+                return this.$store.state.currentRoute
+            },
+            computeWidth () {
+                return this.isCollapse ? '64px' : '200px'
+            }
+        }
     }
-  }
 </script>
 
 <style lang="scss">

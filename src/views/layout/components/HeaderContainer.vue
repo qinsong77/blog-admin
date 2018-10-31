@@ -1,10 +1,17 @@
 <template>
     <header class="header-bar" :style="{width:computeWidth}">
-        <div>
+        <div class="header-bar-left">
             <i class="header-collapse-trigger iconfont"
                @click="handleSidebar"
                :class="[isCollapse?'icon-indent':'icon-outdent' ]">
             </i>
+            <div class="breadcrumb-container">
+                <el-breadcrumb separator-class="el-icon-arrow-right">
+                    <el-breadcrumb-item v-for="item in breadCrumbList" :key="item.path" :to="{path:item.path}">
+                        <i :class="['iconfont',item.icon]"></i>{{item.title}}
+                    </el-breadcrumb-item>
+                </el-breadcrumb>
+            </div>
         </div>
         <div class="menu-container">
             <el-popover
@@ -31,45 +38,52 @@
 </template>
 
 <script>
-  import { removeToken } from '../../../common/auth'
-  import MsgTab from './MsgTab'
+    import { removeToken } from '../../../common/auth'
+    import MsgTab from './MsgTab'
 
-  export default {
-    name: 'HeaderContainer',
-    components: { MsgTab },
-    data () {
-      return {
-        username: 'Sysuke',
-        activeNames: ''
-      }
-    },
-    props: {
-      isCollapse: Boolean
-    },
-    computed: {
-      computeWidth () {
-        return this.isCollapse ? 'calc(100% - 64px)' : 'calc(100% - 200px)'
-      }
-    },
-    methods: {
-      handleSidebar () {
-        this.$emit('EmitCollapse')
-      },
-      handleCommand (command) {
-        if (command === 'b') {
-          removeToken()
-          this.$router.push({ name: 'login' })
+    export default {
+        name: 'HeaderContainer',
+        components: { MsgTab },
+        data () {
+            return {
+                username: 'Sysuke',
+                activeNames: ''
+            }
+        },
+        props: {
+            breadCrumbList: {
+                default: function () {
+                    return []
+                },
+                type: Array
+            },
+            isCollapse: Boolean
+        },
+        computed: {
+            computeWidth () {
+                return this.isCollapse ? 'calc(100% - 64px)' : 'calc(100% - 200px)'
+            }
+        },
+        methods: {
+            handleSidebar () {
+                this.$emit('EmitCollapse')
+            },
+            handleCommand (command) {
+                if (command === 'b') {
+                    removeToken()
+                    this.$router.push({ name: 'login' })
+                }
+            },
+            handleMsgTabClick (tab, event) {
+                console.log(tab, event)
+            }
         }
-      },
-      handleMsgTabClick (tab, event) {
-        console.log(tab, event)
-      }
     }
-  }
 </script>
 
 <style lang="scss">
     .header-bar {
+        box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
         transition: width .2s cubic-bezier(.23, 1, .32, 1);
         position: fixed;
         top: 0;
@@ -79,13 +93,26 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        .header-collapse-trigger {
-            font-size: 25px;
-            height: 64px;
-            cursor: pointer;
-            transition: all .3s, padding 0s;
-            padding: 30px 24px;
+        >.header-bar-left{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            >.header-collapse-trigger {
+                font-size: 25px;
+                /*height: 64px;*/
+                cursor: pointer;
+                transition: all .3s ease-in-out;
+                padding: 30px 24px;
+            }
+            .breadcrumb-container{
+                .iconfont{
+                    font-size: 18px;
+                    margin-right: 5px;
+                    vertical-align: -1px;
+                }
+            }
         }
+
         .menu-container {
             padding-right: 20px;
             display: flex;

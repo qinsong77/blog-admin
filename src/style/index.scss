@@ -1,8 +1,11 @@
 @import "./reset.scss";
 @import "./iconfont/iconfont.css";
 @import "./app-iconfont";
+@import "./common.scss";
 html, body {
   height: 100%;
+  color:$text-b;
+  font-size: 14px;
 }
 #app {
   height: 100%;
@@ -10,6 +13,7 @@ html, body {
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
+  //font-family: DINRegular, -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", "Hiragino Sans GB", "Segoe UI", "Microsoft YaHei", "微软雅黑", sans-serif;;
 }
 
 ::-webkit-scrollbar {

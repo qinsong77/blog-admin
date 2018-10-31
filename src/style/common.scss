@@ -1,0 +1,14 @@
+.mine-card {
+  box-shadow: $box-shadow;
+  border-radius: 3px;
+  background: white;
+  > .title {
+    padding: 12px 10px;
+    background: lighten(#f0f2f5, 10%);
+    font-size: 17px;
+    border-bottom: $boder;
+  }
+  > .content {
+    padding: 12px 10px;
+  }
+}

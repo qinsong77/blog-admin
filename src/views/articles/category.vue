@@ -1,10 +1,12 @@
 <template>
-    <div>tags</div>
+    <div>
+        category
+    </div>
 </template>
 
 <script>
   export default {
-    name: 'tags',
+    name: 'category',
     data () {
       return {}
     },
@@ -20,6 +22,6 @@
   }
 </script>
 
-<style>
+<style lang="scss">
 
 </style>

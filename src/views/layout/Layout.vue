@@ -4,7 +4,7 @@
             <slidebar :is-collapse="isCollapse"/>
         </nav>
         <div class="main-wrapper" :style="{ 'padding-left':isCollapse ?'64px':'200px'}">
-            <header-container  :is-collapse="isCollapse" @EmitCollapse="EmitCollapse"/>
+            <header-container  :is-collapse="isCollapse" @EmitCollapse="EmitCollapse" :breadCrumbList="breadCrumbList"/>
             <section>
                 <div class="main-container">
                     <router-view></router-view>
@@ -15,23 +15,28 @@
 </template>
 
 <script>
-  import Slidebar from './components/slidebar'
-  import HeaderContainer from './components/HeaderContainer'
-  export default {
-    name: 'Layout',
-    components: { Slidebar, HeaderContainer },
-    data () {
-      return {
-        isCollapse: false
-      }
-    },
+    import Slidebar from './components/slidebar'
+    import HeaderContainer from './components/HeaderContainer'
+    export default {
+        name: 'Layout',
+        components: { Slidebar, HeaderContainer },
+        data () {
+            return {
+                isCollapse: false
+            }
+        },
+        computed: {
+            breadCrumbList () {
+                return this.$store.state.BreadCrumbList
+            }
 
-    methods: {
-      EmitCollapse () {
-        this.isCollapse = !this.isCollapse
-      }
+        },
+        methods: {
+            EmitCollapse () {
+                this.isCollapse = !this.isCollapse
+            }
+        }
     }
-  }
 </script>
 
 <style lang="scss">
