@@ -2,6 +2,9 @@ import routers from '../router/routes'
 export function getBreadCrumbList (route) {
     let breadCrumbList = []
     routers.find((item) => {
+        if (item.hide) {
+            return false
+        }
         if (item.path === route) {
             breadCrumbList.push({
                 path: item.path,
