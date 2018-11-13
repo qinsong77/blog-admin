@@ -14,7 +14,12 @@ module.exports = {
     lintOnSave: true,
     productionSourceMap: true,
     devServer: {
-        publicPath: baseUrl // 和 baseUrl 保持一致
+        publicPath: baseUrl, // 和 baseUrl 保持一致 https://webpack.js.org/configuration/dev-server/#devserver-publicpath-
+        proxy: {
+            '/admin': {
+                target: 'http://localhost:3000'
+            }
+        }
     },
     // 默认设置: https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-service/lib/config/base.js
     chainWebpack: config => {
