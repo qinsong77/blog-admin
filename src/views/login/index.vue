@@ -37,7 +37,7 @@
     import { isvalidUsername } from '_com/validate'
     import { setToken } from '_com/auth'
     import config from './config/default'
-
+    import axios from 'axios'
     require('particles.js')
     export default {
         name: 'index',
@@ -71,30 +71,52 @@
         mounted () {
             // 初始化例子插件
             // eslint-disable-next-line
-      particlesJS('login', config)
+            particlesJS('login', config)
         },
         beforeDestroy () {
             /* eslint-disable */
-      if (pJSDom && pJSDom.length > 0) {
-        pJSDom[0].pJS.fn.vendors.destroypJS()
-        pJSDom = []
-      }
-    },
-    methods: {
-      handleLogin() {
-        this.$refs.loginForm.validate(valid => {
-          if (valid) {
-            this.loading = true
-            setToken(this.loginForm.username)
-            this.$router.push({path: '/'})
-          } else {
-            console.log('error submit!!')
-            return false
-          }
-        })
-      }
+            if (pJSDom && pJSDom.length > 0) {
+                pJSDom[0].pJS.fn.vendors.destroypJS()
+                pJSDom = []
+            }
+        },
+        methods: {
+            handleLogin () {
+                this.$refs.loginForm.validate(valid => {
+                    if (valid) {
+                        this.loading = true
+                        axios.post('/admin/api/login',{
+                            username:this.loginForm.username,
+                            password:this.loginForm.password
+                        }).then(res=>{
+                            this.loading = false
+                            console.log(res);
+                            if(res.data.result){
+                                this.$message({
+                                    message: res.data.msg,
+                                    type: 'success'
+                                });
+                                setToken(this.loginForm.username)
+                                this.$router.push({ path: '/' })
+                            }else{
+                                this.$message({
+                                    message: res.data.msg,
+                                    type: 'error'
+                                });
+                            }
+                        }).catch(err=>{
+                            this.loading = false
+                            console.log(err)
+                        })
+
+                    } else {
+                        console.log('error submit!!')
+                        return false
+                    }
+                })
+            }
+        }
     }
-  }
 </script>
 
 <style lang="scss">

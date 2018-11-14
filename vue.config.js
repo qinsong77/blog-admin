@@ -16,7 +16,7 @@ module.exports = {
     devServer: {
         publicPath: baseUrl, // 和 baseUrl 保持一致 https://webpack.js.org/configuration/dev-server/#devserver-publicpath-
         proxy: {
-            '/admin': {
+            '/admin/api': {
                 target: 'http://localhost:3000'
             }
         }
