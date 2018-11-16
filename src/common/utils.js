@@ -1,4 +1,31 @@
 import routers from '../router/routes'
+import Cookies from 'js-cookie'
+
+const TokenKey = 'Admin-Token'
+
+export function getToken () {
+    return Cookies.get(TokenKey)
+}
+export function setToken (token) {
+    Cookies.set(TokenKey, token)
+}
+export function removeToken () {
+    Cookies.remove(TokenKey)
+}
+
+export const log = (mes, data) => {
+    // (process.env.NODE_ENV === 'development')
+    console.log(mes + ':')
+    console.log(data)
+}
+
+export const isRealNum = (val) => {
+    // isNaN()函数 把空串 空格 以及NUll 按照0来处理 所以先去除
+    if (val === '' || val == null) {
+        return false
+    }
+    return !isNaN(val)
+}
 export function getBreadCrumbList (route) {
     let breadCrumbList = []
     routers.find((item) => {
@@ -41,6 +68,5 @@ export function getBreadCrumbList (route) {
             }
         }
     })
-    console.log(breadCrumbList)
     return breadCrumbList
 }

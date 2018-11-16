@@ -84,9 +84,8 @@
 
 <script>
     import { isvalidUsername } from '_com/validate'
-    import { setToken } from '_com/auth'
+    import { setToken } from '_com/utils'
     import config from './config/default'
-    import axios from 'axios'
 
     require('particles.js')
     export default {
@@ -118,13 +117,13 @@
             return {
                 centerDialogVisible: false,
                 loginForm: {
-                    username: 'admin',
-                    password: 'adminqinsong'
+                    username: '',
+                    password: ''
                 },
                 registerForm: {
-                    username: 'admin',
-                    password: 'adminqinsong',
-                    passwordSure: 'adminqinsong'
+                    username: '',
+                    password: '',
+                    passwordSure: ''
                 },
                 loginRules: {
                     username: [{ required: true, trigger: 'blur', validator: validateUsername }],
@@ -156,24 +155,19 @@
                 this.$refs.loginForm.validate(valid => {
                     if (valid) {
                         this.loading = true
-                        axios.post('/admin/api/login', {
+                        this.$Axios.post('/login', {
                             username: this.loginForm.username,
                             password: this.loginForm.password
                         }).then(res => {
                             this.loading = false
                             console.log(res);
-                            if (res.data.result) {
+                            if (res.result) {
                                 this.$message({
-                                    message: res.data.content.msg,
+                                    message: res.msg,
                                     type: 'success'
                                 });
-                                setToken(res.data.content.token)
+                                setToken(res.content)
                                 this.$router.push({path: '/'})
-                            } else {
-                                this.$message({
-                                    message: res.data.content.msg,
-                                    type: 'error'
-                                });
                             }
                         }).catch(err => {
                             this.loading = false
@@ -189,24 +183,19 @@
             handleRegister(){
                 this.$refs.registerForm.validate(valid=>{
                     if(valid){
-                        axios.post('/admin/api/register', {
+                        this.$Axios.post('/admin/api/register', {
                             username: this.registerForm.username,
                             password: this.registerForm.password
                         }).then(res => {
                             this.registerLoading = false
                             console.log(res);
-                            if (res.data.result) {
+                            if (res.result) {
                                 this.$message({
-                                    message: res.data.msg,
+                                    message: res.msg,
                                     type: 'success'
                                 });
-                                setToken(this.loginForm.username)
+                                setToken(res.content)
                                 this.$router.push({path: '/'})
-                            } else {
-                                this.$message({
-                                    message: res.data.msg.rawMessage,
-                                    type: 'error'
-                                });
                             }
                         }).catch(err => {
                             this.registerLoading = false

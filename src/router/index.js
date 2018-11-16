@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import routes from './routes'
 import store from '../store'
-import { getToken } from '../common/auth'
+import { getToken } from '_com/utils'
 
 import { Notification } from 'element-ui'
 // 进度条

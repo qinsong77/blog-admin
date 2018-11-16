@@ -38,7 +38,7 @@
 </template>
 
 <script>
-    import { removeToken } from '../../../common/auth'
+    import { removeToken } from '_com/utils'
     import MsgTab from './MsgTab'
 
     export default {
@@ -70,8 +70,11 @@
             },
             handleCommand (command) {
                 if (command === 'b') {
-                    removeToken()
-                    this.$router.push({ name: 'login' })
+                    this.$Axios.post('/logout').then(res => {
+                        removeToken()
+                        this.$notify.success(res.msg)
+                        this.$router.push({ name: 'login' })
+                    })
                 }
             },
             handleMsgTabClick (tab, event) {
