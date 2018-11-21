@@ -17,24 +17,27 @@
 <script>
     import Slidebar from './components/slidebar'
     import HeaderContainer from './components/HeaderContainer'
+    import { mapState, mapMutations } from 'vuex'
     export default {
         name: 'Layout',
         components: { Slidebar, HeaderContainer },
         data () {
             return {
-                isCollapse: false
             }
         },
         computed: {
+            ...mapState({
+                'isCollapse': state => state.isCollapse
+            }),
             breadCrumbList () {
                 return this.$store.state.BreadCrumbList
             }
 
         },
         methods: {
-            EmitCollapse () {
-                this.isCollapse = !this.isCollapse
-            }
+            ...mapMutations({
+                'EmitCollapse': 'reverseIsCollapse'
+            })
         }
     }
 </script>

@@ -224,7 +224,7 @@
         }
         .login-container {
             position: relative;
-            z-index: 3000;
+            z-index: 2000;
             > .login-title {
                 padding-top: 10%;
                 color: $text-b;
