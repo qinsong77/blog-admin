@@ -62,7 +62,7 @@ class HttpRequest {
             Notification.error({
                 title: '服务请求错误,无网络或服务器响应出错',
                 message: error,
-                duration: 0
+                duration: 10000
             })
             // 对响应错误做点什么
             return Promise.reject(error)
