@@ -183,7 +183,7 @@
             handleRegister(){
                 this.$refs.registerForm.validate(valid=>{
                     if(valid){
-                        this.$Axios.post('/admin/api/register', {
+                        this.$Axios.post('/register', {
                             username: this.registerForm.username,
                             password: this.registerForm.password
                         }).then(res => {

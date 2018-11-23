@@ -109,10 +109,10 @@
             },
             deleteOption () {
                 this.deleteLoading = true
-                this.$Axios.post('/deleteDir', { id: this.deleteOp.pop() }).then(res => {
+                this.$Axios.delete('/deleteDir', { id: this.deleteOp.pop() }).then(res => {
                     this.$message.success(res.msg)
                     this.updateSelect()
-                }).finally(() => this.deleteLoading = false)
+                }).finally(() => { this.subLoading = false })
             }
         }
     }

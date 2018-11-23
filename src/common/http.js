@@ -1,7 +1,7 @@
 import Axios from 'axios'
 import { Notification } from 'element-ui'
-import { getToken, log } from './utils'
-
+import {getToken, log, removeToken} from './utils'
+import router from '../router'
 const baseURL = '/admin/api'
 const timeOut = 10000
 
@@ -48,7 +48,17 @@ class HttpRequest {
             if (data.result) {
                 return data
             } else {
-                if (data.msg) {
+                if(data.msg.indexOf('未登陆') === 0){
+                    Notification.error({
+                        title: res.config.url + '请求出错',
+                        message: '未登陆,跳转登陆页中',
+                        duration: 2000
+                    })
+                    removeToken()
+                    router.push({
+                        name: 'login'
+                    })
+                }else {
                     Notification.error({
                         title: res.config.url + '请求出错',
                         message: data.msg,
