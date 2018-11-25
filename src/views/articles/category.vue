@@ -118,7 +118,7 @@
     }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
     .parent{
         font-size: 16px;
         padding: 5px 3px;

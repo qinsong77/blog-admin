@@ -4,10 +4,9 @@ import { getBreadCrumbList } from '_com/utils'
 Vue.use(Vuex)
 let isCollapse = localStorage.getItem('isCollapse')
 
-console.log(isCollapse)
 export default new Vuex.Store({
     state: {
-        isCollapse: Boolean(isCollapse),
+        isCollapse: Boolean(isCollapse !== 'false'),
         currentRoute: '/',
         BreadCrumbList: []
     },

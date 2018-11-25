@@ -93,6 +93,15 @@ const routes = [
                     icon: 'icon-tags'
                 },
                 component: () => import('_v/articles/tags')
+            },
+            {
+                path: 'images',
+                name: 'images',
+                meta: {
+                    title: '图片管理',
+                    icon: 'icon-image'
+                },
+                component: () => import('_v/articles/imgUpload')
             }
         ]
     },
