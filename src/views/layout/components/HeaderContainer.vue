@@ -86,6 +86,7 @@
 
 <style lang="scss">
     .header-bar {
+        z-index:99;
         box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
         transition: width .2s cubic-bezier(.23, 1, .32, 1);
         position: fixed;

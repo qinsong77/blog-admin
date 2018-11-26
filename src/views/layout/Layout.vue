@@ -7,7 +7,11 @@
             <header-container  :is-collapse="isCollapse" @EmitCollapse="EmitCollapse" :breadCrumbList="breadCrumbList"/>
             <section>
                 <div class="main-container">
-                    <router-view></router-view>
+                    <transition name="fade-transform" mode="out-in">
+                        <keep-alive >
+                            <router-view :key="key"/>
+                        </keep-alive>
+                    </transition>
                 </div>
             </section>
         </div>
@@ -26,6 +30,9 @@
             }
         },
         computed: {
+            key () {
+                return this.$route.fullPath
+            },
             ...mapState({
                 'isCollapse': state => state.isCollapse
             }),
@@ -61,5 +68,18 @@
                 padding-top: 64px;
             }
         }
+    }
+    /*fade-transform*/
+    .fade-transform-leave-active,
+    .fade-transform-enter-active {
+        transition: all .5s;
+    }
+    .fade-transform-enter {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    .fade-transform-leave-to {
+        opacity: 0;
+        transform: translateX(30px);
     }
 </style>

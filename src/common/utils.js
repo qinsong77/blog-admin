@@ -26,6 +26,18 @@ export const isRealNum = (val) => {
     }
     return !isNaN(val)
 }
+
+export const debounce = (func, wait) => {
+    let timer = null
+    return function () {
+        let content = this
+        let args = arguments
+        clearTimeout(timer)
+        timer = setTimeout(() => {
+            func.apply(content, args)
+        }, wait)
+    }
+}
 export function getBreadCrumbList (route) {
     let breadCrumbList = []
     routers.find((item) => {

@@ -1,10 +1,14 @@
 <template>
   <div class="markdown-wrapper">
-      <mavon-editor  @save="save" @change="change" ref="md" :value="initialValue"/>
+      <mavon-editor  @save="save"
+                     @change="change"
+                     ref="md"
+                     :value="initialValue"/>
   </div>
 </template>
 
 <script>
+    import { debounce} from "../../common/utils"
     import { mavonEditor } from 'mavon-editor'
     import 'mavon-editor/dist/css/index.css'
     export default {
@@ -39,15 +43,16 @@
                 if (this.localCache) localStorage.markdownContent = value
             },
             change (value) {
-                console.log(value)
                 this.$emit('input', value)
                 this.$emit('on-change', value)
+                debounce(() => {
+                    localStorage.markdownContent = value
+                }, 1500)()
             }
         },
         mounted () {
             let content = localStorage.markdownContent
             if (content) {
-                console.log(content)
                 this.initialValue = content
             }
         }

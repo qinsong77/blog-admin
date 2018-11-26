@@ -62,7 +62,7 @@ class HttpRequest {
                     Notification.error({
                         title: res.config.url + '请求出错',
                         message: data.msg,
-                        duration: 0
+                        duration: 10000
                     })
                 }
                 return false
