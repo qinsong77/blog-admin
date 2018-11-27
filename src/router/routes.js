@@ -68,22 +68,13 @@ const routes = [
                 component: () => import('_v/articles/all')
             },
             {
-                path: 'category',
-                name: 'category',
+                path: 'directroy',
+                name: 'directroy',
                 meta: {
                     title: '分类目录',
                     icon: 'icon-orderedlist'
                 },
-                component: () => import('_v/articles/category')
-            },
-            {
-                path: 'post',
-                name: 'postArticle',
-                meta: {
-                    title: '发布文章',
-                    icon: 'icon-edit-square'
-                },
-                component: () => import('_v/articles/post')
+                component: () => import('_v/articles/directroy')
             },
             {
                 path: 'tags',
@@ -102,7 +93,26 @@ const routes = [
                     icon: 'icon-image'
                 },
                 component: () => import('_v/articles/imgUpload')
-            }
+            },
+            {
+                path: 'post',
+                name: 'postArticle',
+                meta: {
+                    title: '发布文章',
+                    icon: 'icon-edit-square'
+                },
+                component: () => import('_v/articles/post')
+            },
+            {
+                path: 'editArticle/:id',
+                name: 'editArticle',
+                meta: {
+                    title: '修改文章',
+                    hide: true,
+                    icon: 'icon-edit-square'
+                },
+                component: () => import('_v/articles/post')
+            },
         ]
     },
     {

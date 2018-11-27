@@ -14,6 +14,7 @@
             </div>
         </div>
         <div class="menu-container">
+            <i  class="el-icon-refresh" style="cursor: pointer;padding: 10px" @click="refreshRoute"></i>
             <el-popover
                     width="250"
                     placement="bottom"
@@ -79,6 +80,16 @@
             },
             handleMsgTabClick (tab, event) {
                 console.log(tab, event)
+            },
+            refreshRoute () {
+                console.log(this.$route)
+                this.$router.push({
+                    name: this.$route.name,
+                    params: this.$route.params,
+                    query: {
+                        t: new Date().getTime()
+                    }
+                })
             }
         }
     }

@@ -1,6 +1,6 @@
 import Axios from 'axios'
 import { Notification } from 'element-ui'
-import {getToken, log, removeToken} from './utils'
+import { getToken, log, removeToken } from './utils'
 import router from '../router'
 const baseURL = '/admin/api'
 const timeOut = 10000
@@ -42,14 +42,14 @@ class HttpRequest {
 
         // 添加响应拦截器
         instance.interceptors.response.use((res) => {
-            console.log(res.config.url + ":")
+            console.log(res.config.url + ':')
             console.log(res)
             let { data } = res
-            const is = this.destroy(url) //
+            // const is = this.destroy(url)
             if (data.result) {
                 return data
             } else {
-                if(data.msg.indexOf('未登陆') === 0){
+                if (data.msg.indexOf('未登陆') === 0) {
                     Notification.error({
                         title: res.config.url + '请求出错',
                         message: '未登陆,跳转登陆页中',
@@ -59,7 +59,7 @@ class HttpRequest {
                     router.push({
                         name: 'login'
                     })
-                }else {
+                } else {
                     Notification.error({
                         title: res.config.url + '请求出错',
                         message: data.msg,

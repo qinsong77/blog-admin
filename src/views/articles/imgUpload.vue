@@ -54,7 +54,7 @@
           <template slot-scope="scope">
             <el-button
               size="mini"
-              type="danger"
+              type="warning"
               @click="handleDelete(scope.$index, scope.row)">删除</el-button>
           </template>
         </el-table-column>

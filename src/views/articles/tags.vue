@@ -2,7 +2,7 @@
     <div>
         <div class="tags-list">
             <el-tag
-                    v-for="(tag,index) in tags"
+                    v-for="(tag,index) in getTags"
                     :key="tag.id"
                     closable
                     @close="deleteTag(tag.id,index)"

@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import article from './modules/article'
 import { getBreadCrumbList } from '_com/utils'
 Vue.use(Vuex)
 let isCollapse = localStorage.getItem('isCollapse')
@@ -20,5 +21,8 @@ export default new Vuex.Store({
             state.isCollapse = !state.isCollapse
         }
     },
-    actions: {}
+    actions: {},
+    modules: {
+        article
+    }
 })

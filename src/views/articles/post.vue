@@ -19,7 +19,15 @@
                                     <el-option label="原创" value="原创"></el-option>
                                     <el-option label="转载" value="转载"></el-option>
                                 </el-select>
-                                <el-button type="info" style="margin-left: 30px" @click="refreshData">刷新标签&目录</el-button>
+                                <!--<el-button type="info" style="margin-left: 30px" @click="refreshData">刷新标签&目录</el-button>-->
+                            </el-form-item>
+                            <el-form-item label="文章状态">
+                                <el-select v-model="post.status" placeholder="文章状态">
+                                    <el-option label="草稿" :value="2"></el-option>
+                                    <el-option label="下架" :value="0"></el-option>
+                                    <el-option label="发表" :value="1"></el-option>
+                                </el-select>
+                                <!--<el-button type="info" style="margin-left: 30px" @click="refreshData">刷新标签&目录</el-button>-->
                             </el-form-item>
                             <el-form-item label="文章标签">
                                 <el-checkbox-group v-model="post.checkTagList" class="tags-list">
@@ -45,24 +53,24 @@
                                         <template  v-for="item in dirs">
                                             <el-checkbox
                                                     v-if="!item.children || item.children.length<=0"
-                                                    :key="item.value"
+                                                    :key="item.id"
                                                     class="parent"
-                                                    :name="item.value"
-                                                    :label="item.label">
+                                                    :name="item.id"
+                                                    :label="item.name">
                                             </el-checkbox>
                                             <template v-else>
                                                 <el-checkbox
-                                                        :key="item.value"
+                                                        :key="item.id"
                                                         class="parent"
-                                                        :name="item.value"
-                                                        :label="item.label">
+                                                        :name="item.id"
+                                                        :label="item.name">
                                                 </el-checkbox>
                                                 <el-checkbox
                                                         v-for="child in item.children"
                                                         class="child"
-                                                        :name="child.value"
-                                                        :label="child.label"
-                                                        :key="child.value">
+                                                        :name="child.id"
+                                                        :label="child.name"
+                                                        :key="child.id">
                                                 </el-checkbox>
                                             </template>
                                         </template>
@@ -84,7 +92,7 @@
                                         @on-crop="submitBanner"/>
                                 <div class="banner-preview" v-show="this.post.imgUrl">
                                     <p>Banner预览：</p>
-                                    <img :src="this.post.imgUrl" alt="Banner预览"/>
+                                    <img :src="this.post.imgUrl" id="img" alt="Banner预览"/>
                                 </div>
                             </div>
                         </el-card>
@@ -120,7 +128,8 @@
                     checkTagList: [],
                     title: '',
                     disc: '',
-                    imgUrl: ''
+                    imgUrl: '',
+                    status: 1
                 }
             }
         },
@@ -129,9 +138,24 @@
         created () {
             this.getDirs()
             this.getTags()
-        },
+            if (this.$route.params.id) {
+                const loading = this.$loading({
+                    target: document.querySelector('.post-article'),
+                    lock: true,
+                    spinner: 'el-icon-loading',
+                    background: 'rgba(0, 0, 0, 0.7)'
+                })
+                this.$Axios.get('getArticleListByID', { id: this.$route.params.id }).then(res => {
+                    this.post.checkTagList = res.content.tags.map(item => item.name)
+                    this.post.checkDirList = res.content.dirs.map(item => item.name)
+                    const img = document.getElementById('img')
 
+                    Object.assign(this.post, res.content)
+                }).finally(() => { loading.close() })
+            }
+        },
         mounted () {
+
         },
 
         methods: {
@@ -144,10 +168,6 @@
                     this.$message.success(res.msg)
                     this.post.imgUrl = res.content.url
                 }).finally(() => { this.imgSubmitBtbLoading = false })
-            },
-            refreshData () {
-                this.getDirs()
-                this.getTags()
             },
             getTags () {
                 this.$Axios.get('/tags').then(res => {
@@ -174,16 +194,16 @@
                 this.dirs.forEach(item => {
                     if (this.post.checkDirList.includes(item.label)) {
                         this.post.dirs.push({
-                            id: item.value,
-                            name: item.label
+                            id: item.id,
+                            name: item.name
                         })
                     }
                     if (item.children && item.children.length > 0) {
                         item.children.forEach(child => {
-                            if (this.post.checkDirList.includes(child.label)) {
+                            if (this.post.checkDirList.includes(child.name)) {
                                 this.post.dirs.push({
-                                    id: child.value,
-                                    name: child.label
+                                    id: child.id,
+                                    name: child.name
                                 })
                             }
                         })

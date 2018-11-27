@@ -2,7 +2,7 @@
     <div>
         <el-form :inline="true" :model="subDir" class="form-inline">
             <el-form-item label="名称">
-                <el-input v-model="subDir.label" type="text"></el-input>
+                <el-input v-model="subDir.name" type="text"></el-input>
             </el-form-item>
             <el-form-item label="是否为根节点">
                 <el-select v-model="subDir.root" placeholder="是否为根节点" :disabled="rootDisabled" @change="rootChange">
@@ -20,6 +20,7 @@
                 <el-cascader
                         v-model="subDir.parent"
                         :options="options"
+                        :props="props"
                         change-on-select
                         :disabled="optionsDisabled"
                 />
@@ -33,6 +34,7 @@
                 <el-cascader
                         v-model="deleteOp"
                         :options="options"
+                        :props="props"
                         change-on-select
                 />
             </el-form-item>
@@ -41,11 +43,11 @@
             </el-form-item>
         </el-form>
         <el-card style="width: 300px">
-            <div v-for="item in options" :key="item.value" class="parent">
-                {{item.label}}
+            <div v-for="item in options" :key="item.id" class="parent">
+                {{item.name}}
                 <template v-if="item.children && item.children.length>0">
-                    <div v-for="child in item.children" :key="child.value" class="child">
-                         {{child.label}}
+                    <div v-for="child in item.children" :key="child.id" class="child">
+                         {{child.name}}
                     </div>
                 </template>
             </div>
@@ -58,6 +60,7 @@
         name: 'category',
         data () {
             return {
+                props: this.$store.state.article.DirsCascaderProps,
                 optionsDisabled: false,
                 rootDisabled: false,
                 leafDisabled: false,
@@ -65,7 +68,7 @@
                 deleteLoading: false,
                 deleteOp: [],
                 subDir: {
-                    label: '',
+                    name: '',
                     parent: null,
                     root: false,
                     leaf: true

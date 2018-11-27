@@ -17,7 +17,7 @@
                             <span slot="title">{{menu.meta.title}}</span>
                         </template>
                         <template v-for="(sub,subIndex) in menu.children">
-                            <el-menu-item :index="menu.path+'/'+sub.path" :key="subIndex">
+                            <el-menu-item v-if="!sub.meta.hide" :index="menu.path+'/'+sub.path" :key="subIndex">
                                 <i :class="[sub.meta.icon ? sub.meta.icon:'icon-file','iconfont']"></i>
                                 <span slot="title">{{sub.meta.title}}</span>
                             </el-menu-item>

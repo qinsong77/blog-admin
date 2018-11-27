@@ -9,6 +9,7 @@
                     placeholder="目录"
                     v-model="itemQuery.dirs"
                     :options="dirs"
+                    :props="props"
                     change-on-select
                     class="filter-item"
             />
@@ -16,6 +17,7 @@
         </div>
         <div class="table-content">
             <el-table
+                    v-loading="loading"
                     :data="items"
                     border
                     style="width: 100%">
@@ -73,9 +75,13 @@
                 <el-table-column label="操作">
                     <template slot-scope="scope">
                         <el-button
+                            size="mini"
+                            type="danger"
+                            @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+                        <el-button
                                 size="mini"
-                                type="danger"
-                                @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+                                type="info"
+                                @click="handleEdit(scope.$index, scope.row)">修改</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -99,6 +105,8 @@
         name: 'articles',
         data () {
             return {
+                loading: false,
+                props: this.$store.state.article.DirsCascaderProps,
                 total: 100,
                 tags: [],
                 dirs: [],
@@ -119,11 +127,6 @@
 
         mounted () {
             this.getArticles(1)
-            this.$Axios.get('/getArticleListByPage/' + 1)
-                .then(res => {
-                    console.log(res)
-                    this.items = res.content.data
-                })
         },
 
         methods: {
@@ -149,13 +152,31 @@
                 this.getList()
             },
             getArticles (page) {
+                this.loading = true
                 this.$Axios.get('/getArticleListByPage/' + page)
                     .then(res => {
                         this.items = res.content.data
-                    })
+                    }).finally(() => { this.loading = false })
             },
             handleFilter () {
 
+            },
+            handleEdit (index, row) {
+                this.$router.push({
+                    name: 'editArticle',
+                    params: {
+                        id: row.id
+                    }
+                })
+            },
+            handleDelete (index, row) {
+                console.log(index)
+                console.log(row)
+                this.$Axios.delete('/delete/article', { id: row.id })
+                    .then(res => {
+                        this.$message.success(res.msg)
+                        this.items.splice(index, 1)
+                    })
             }
         }
     }

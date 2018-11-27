@@ -53,8 +53,12 @@
         },
         mounted () {
             let content = localStorage.markdownContent
-            if (content) {
-                this.initialValue = content
+            if (this.value) {
+                this.initialValue = this.value
+            } else {
+                if (content) {
+                    this.initialValue = content
+                }
             }
         }
     }
