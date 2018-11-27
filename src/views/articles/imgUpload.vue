@@ -96,16 +96,14 @@
                         message: response.msg,
                         type: 'success'
                     })
-                    response.data.createdAt = Date.now()
-                    this.items.unshift(response.data)
+                    response.content.createdAt = Date.now()
+                    this.items.unshift(response.content)
                 } else {
                     this.$message({
                         message: response.msg,
                         type: 'error'
                     })
                 }
-                console.log(file)
-                console.log(fileList)
             },
             uploadError (err, file, fileList) {
                 console.error(err)
@@ -116,7 +114,7 @@
             handleDelete (index, row) {
                 console.log(index)
                 console.log(row)
-                this.$Axios.get('/deleteFiles', { params: { fileId: row.objectId } })
+                this.$Axios.delete('/deleteFiles', { fileId: row.objectId })
                     .then(res => {
                         console.log(res)
                     })

@@ -42,6 +42,7 @@ class HttpRequest {
 
         // 添加响应拦截器
         instance.interceptors.response.use((res) => {
+            console.log(res.config.url + ":")
             console.log(res)
             let { data } = res
             const is = this.destroy(url) //

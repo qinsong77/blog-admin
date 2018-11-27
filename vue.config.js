@@ -33,11 +33,12 @@ module.exports = {
             .set('_v', resolve('src/views'))
             .set('_c', resolve('src/components'))
             .set('_com', resolve('src/common'))
-    // babel-polyfill 加入 entry
-    // const entry = config.entry('app')
-    // entry
-    //   .add('babel-polyfill')
-    //   .end()
+        // babel-polyfill 加入 entry
+        // const entry = config.entry('app')
+        // entry
+        //   .add('babel-polyfill')
+        //   .end()
+        return config
     },
     css: {
         loaderOptions: {

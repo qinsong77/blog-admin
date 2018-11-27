@@ -75,18 +75,22 @@
                         <markdown-editor v-model="post.content"/>
                     </el-form-item>
                     <el-form-item label="Banner图">
-                        <el-upload
-                                class="upload-demo"
-                                drag
-                                action="https://jsonplaceholder.typicode.com/posts/"
-                                multiple>
-                            <i class="el-icon-upload"></i>
-                            <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-                            <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
-                        </el-upload>
+                        <el-card>
+                            <div style="display: flex">
+                                <cropper
+                                        :src="ImageSrc"
+                                        :imgSubmitBtbLoading="imgSubmitBtbLoading"
+                                        crop-button-text="确认提交"
+                                        @on-crop="submitBanner"/>
+                                <div class="banner-preview" v-show="this.post.imgUrl">
+                                    <p>Banner预览：</p>
+                                    <img :src="this.post.imgUrl" alt="Banner预览"/>
+                                </div>
+                            </div>
+                        </el-card>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="primary" @click="submit">保存</el-button>
+                        <el-button type="primary" @click="submit" style="width: 200px">保存</el-button>
                     </el-form-item>
                 </el-form>
             </div>
@@ -96,13 +100,17 @@
 
 <script>
     import MarkdownEditor from '_c/markdown'
+    import Cropper from '../../components/cropper/index'
     export default {
         name: 'mangerArticles',
         components: {
+            Cropper,
             MarkdownEditor
         },
         data () {
             return {
+                imgSubmitBtbLoading: false,
+                ImageSrc: '',
                 tags: [],
                 dirs: [],
                 post: {
@@ -111,7 +119,8 @@
                     checkDirList: [],
                     checkTagList: [],
                     title: '',
-                    disc: ''
+                    disc: '',
+                    imgUrl: ''
                 }
             }
         },
@@ -126,6 +135,16 @@
         },
 
         methods: {
+            submitBanner (blob, fileName) {
+                let name = this.post.title ? this.post.title : fileName
+                this.imgSubmitBtbLoading = true
+                const formData = new FormData()
+                formData.append('file', blob, name)
+                this.$Axios.post('/fileUpload', formData).then(res => {
+                    this.$message.success(res.msg)
+                    this.post.imgUrl = res.content.url
+                }).finally(() => { this.imgSubmitBtbLoading = false })
+            },
             refreshData () {
                 this.getDirs()
                 this.getTags()
@@ -214,6 +233,13 @@
                 .el-form-item__label,.el-form-item__content{
                     line-height: 30px;
                 }
+            }
+        }
+        .banner-preview{
+            width: 500px;
+            margin-right: 15px;
+            img{
+                width: 100%;
             }
         }
     }

@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "cropperjs": "^1.4.3",
     "element-ui": "^2.4.8",
     "js-cookie": "^2.2.0",
     "mavon-editor": "^2.6.17",

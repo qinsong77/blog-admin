@@ -3,12 +3,13 @@
       <mavon-editor  @save="save"
                      @change="change"
                      ref="md"
+                     class="mavon-editor"
                      :value="initialValue"/>
   </div>
 </template>
 
 <script>
-    import { debounce} from "../../common/utils"
+    import { debounce } from '../../common/utils'
     import { mavonEditor } from 'mavon-editor'
     import 'mavon-editor/dist/css/index.css'
     export default {
@@ -61,6 +62,8 @@
 
 <style lang="scss">
 .markdown-wrapper{
-
+    .mavon-editor{
+        min-height: 45vh;
+    }
 }
 </style>

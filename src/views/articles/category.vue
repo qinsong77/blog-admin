@@ -105,14 +105,14 @@
                 ).then(res => {
                     this.$message.success(res.msg)
                     this.updateSelect()
-                }).finally(() => this.subLoading = false)
+                }).finally(() => { this.subLoading = false })
             },
             deleteOption () {
                 this.deleteLoading = true
                 this.$Axios.delete('/deleteDir', { id: this.deleteOp.pop() }).then(res => {
                     this.$message.success(res.msg)
                     this.updateSelect()
-                }).finally(() => { this.subLoading = false })
+                }).finally(() => { this.deleteLoading = false })
             }
         }
     }
