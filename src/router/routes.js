@@ -112,7 +112,7 @@ const routes = [
                     icon: 'icon-edit-square'
                 },
                 component: () => import('_v/articles/post')
-            },
+            }
         ]
     },
     {

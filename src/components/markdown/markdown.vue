@@ -22,6 +22,10 @@
                 type: String,
                 default: ''
             },
+            initialValue: {
+                type: String,
+                default: ''
+            },
             options: {
                 type: Object,
                 default: () => {
@@ -35,8 +39,7 @@
         },
         data () {
             return {
-                editor: null,
-                initialValue: ''
+                editor: null
             }
         },
         methods: {
@@ -53,12 +56,8 @@
         },
         mounted () {
             let content = localStorage.markdownContent
-            if (this.value) {
-                this.initialValue = this.value
-            } else {
-                if (content) {
-                    this.initialValue = content
-                }
+            if (!this.initialValue) {
+                this.$emit('setInitialValue', content)
             }
         }
     }

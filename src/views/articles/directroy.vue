@@ -95,13 +95,13 @@
                 this.optionsDisabled = !this.subDir.leaf
             },
             updateSelect () {
-                this.$Axios.get('queryDir').then(res => {
+                this.$Axios.get('/dir/all').then(res => {
                     this.options = res.content
                 })
             },
             submit () {
                 this.subLoading = true
-                this.$Axios.post('/newDir',
+                this.$Axios.post('/dir/create',
                                  Object.assign({}, {
                                      ...this.subDir
                                  }, { parent: { id: this.subDir.parent ? this.subDir.parent[this.subDir.parent.length - 1] : this.subDir.parent } })
@@ -112,7 +112,7 @@
             },
             deleteOption () {
                 this.deleteLoading = true
-                this.$Axios.delete('/deleteDir', { id: this.deleteOp.pop() }).then(res => {
+                this.$Axios.delete('/dir/delete', { id: this.deleteOp.pop() }).then(res => {
                     this.$message.success(res.msg)
                     this.updateSelect()
                 }).finally(() => { this.deleteLoading = false })

@@ -2,7 +2,7 @@
     <div class="post-article">
         <el-card class="box-card">
             <div slot="header" class="clearfix">
-                <p class="title">撰写新文章</p>
+                <p class="title">{{this.type}}新文章</p>
             </div>
             <div class="content">
                 <el-form :model="post"  class="form">
@@ -77,10 +77,13 @@
                                     </el-checkbox-group>
                                 </div>
                             </el-form-item>
+                            <el-form-item>
+                                <el-button type="primary" @click="submit" style="width: 300px">保存</el-button>
+                            </el-form-item>
                         </div>
                     </div>
                     <el-form-item>
-                        <markdown-editor v-model="post.content"/>
+                        <markdown-editor v-model="post.content" :initialValue="initialValue" @setInitialValue="setInitialValue"/>
                     </el-form-item>
                     <el-form-item label="Banner图">
                         <el-card>
@@ -92,7 +95,7 @@
                                         @on-crop="submitBanner"/>
                                 <div class="banner-preview" v-show="this.post.imgUrl">
                                     <p>Banner预览：</p>
-                                    <img :src="this.post.imgUrl" id="img" alt="Banner预览"/>
+                                    <canvas  id="canvas" alt="Banner预览"/>
                                 </div>
                             </div>
                         </el-card>
@@ -117,6 +120,8 @@
         },
         data () {
             return {
+                type: '撰写',
+                initialValue: '',
                 imgSubmitBtbLoading: false,
                 ImageSrc: '',
                 tags: [],
@@ -127,7 +132,7 @@
                     checkDirList: [],
                     checkTagList: [],
                     title: '',
-                    disc: '',
+                    desc: '',
                     imgUrl: '',
                     status: 1
                 }
@@ -139,17 +144,29 @@
             this.getDirs()
             this.getTags()
             if (this.$route.params.id) {
+                this.type = '修改'
                 const loading = this.$loading({
                     target: document.querySelector('.post-article'),
                     lock: true,
                     spinner: 'el-icon-loading',
                     background: 'rgba(0, 0, 0, 0.7)'
                 })
-                this.$Axios.get('getArticleListByID', { id: this.$route.params.id }).then(res => {
+                this.$Axios.get(`article/${this.$route.params.id}`).then(res => {
+                    this.OldPost = res.content
+                    this.initialValue = res.content.content
                     this.post.checkTagList = res.content.tags.map(item => item.name)
                     this.post.checkDirList = res.content.dirs.map(item => item.name)
-                    const img = document.getElementById('img')
-
+                    const img = new Image()
+                    const canvas = document.getElementById('canvas')
+                    const ctx = canvas.getContext('2d')
+                    img.src = res.content.imgUrl
+                    img.setAttribute('crossOrigin', 'Anonymous') // 解决报错 VM20002:1 Uncaught DOMException: Failed to execute 'toDataURL' on 'HTMLCanvasElement': Tainted canvases may not be exported.
+                    img.onload = () => {
+                        canvas.width = img.width
+                        canvas.height = img.height
+                        ctx.drawImage(img, 0, 0)
+                        this.ImageSrc = canvas.toDataURL('image/jpeg')
+                    }
                     Object.assign(this.post, res.content)
                 }).finally(() => { loading.close() })
             }
@@ -159,23 +176,26 @@
         },
 
         methods: {
+            setInitialValue (value) {
+                this.initialValue = value
+            },
             submitBanner (blob, fileName) {
                 let name = this.post.title ? this.post.title : fileName
                 this.imgSubmitBtbLoading = true
                 const formData = new FormData()
                 formData.append('file', blob, name)
-                this.$Axios.post('/fileUpload', formData).then(res => {
+                this.$Axios.post('/file/upload', formData).then(res => {
                     this.$message.success(res.msg)
                     this.post.imgUrl = res.content.url
                 }).finally(() => { this.imgSubmitBtbLoading = false })
             },
             getTags () {
-                this.$Axios.get('/tags').then(res => {
+                this.$Axios.get('/tag/all').then(res => {
                     this.tags = res.content
                 })
             },
             getDirs () {
-                this.$Axios.get('/queryDir').then(res => {
+                this.$Axios.get('/dir/all').then(res => {
                     this.dirs = res.content
                 })
             },
@@ -192,7 +212,7 @@
                 })
                 this.post.dirs = []
                 this.dirs.forEach(item => {
-                    if (this.post.checkDirList.includes(item.label)) {
+                    if (this.post.checkDirList.includes(item.name)) {
                         this.post.dirs.push({
                             id: item.id,
                             name: item.name
@@ -209,9 +229,52 @@
                         })
                     }
                 })
-                this.$Axios.post('/article/submitArticle', this.post).then(res => {
-                    this.$message.success(res.msg)
-                }).finally(() => { loading.close() })
+                if (this.type === '撰写') {
+                    this.$Axios.post('/article/create', this.post).then(res => {
+                        this.$message.success(res.msg)
+                    }).finally(() => { loading.close() })
+                } else {
+                    const post = {
+                        id: this.post.id
+                    }
+                    for (let item in this.post) {
+                        if (!Array.isArray(this.post[item])) {
+                            if (this.post[item] !== this.OldPost[item]) {
+                                post[item] = this.post[item]
+                            }
+                        }
+                    }
+                    post.needDeleteTags = this.OldPost.tags.filter(item => {
+                        return !this.post.tags.find(tag => {
+                            return tag.id === item.id
+                        })
+                    })
+                    post.needSaveTags = this.post.tags.filter(item => {
+                        return !this.OldPost.tags.find(tag => {
+                            return tag.id === item.id
+                        })
+                    })
+                    if (post.needSaveTags.length > 0 || post.needDeleteTags.length > 0) {
+                        post.tags = this.post.tags
+                    }
+                    post.needDeleteDirs = this.OldPost.dirs.filter(item => {
+                        return !this.post.dirs.find(tag => {
+                            return tag.id === item.id
+                        })
+                    })
+                    post.needSaveDirs = this.post.dirs.filter(item => {
+                        return !this.OldPost.dirs.find(dir => {
+                            return dir.id === item.id
+                        })
+                    })
+                    if (post.needDeleteDirs.length > 0 || post.needSaveDirs.length > 0) {
+                        post.dirs = this.post.dirs
+                    }
+                    console.log(post)
+                    this.$Axios.patch('/article/edit', post).then(res => {
+                        this.$message.success(res.msg)
+                    }).finally(() => { loading.close() })
+                }
             }
         }
     }
@@ -258,7 +321,7 @@
         .banner-preview{
             width: 500px;
             margin-right: 15px;
-            img{
+            canvas{
                 width: 100%;
             }
         }

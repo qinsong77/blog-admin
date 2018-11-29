@@ -2,7 +2,7 @@
     <div>
         <div class="tags-list">
             <el-tag
-                    v-for="(tag,index) in getTags"
+                    v-for="(tag,index) in tags"
                     :key="tag.id"
                     closable
                     @close="deleteTag(tag.id,index)"
@@ -47,7 +47,7 @@
                 return ['success', 'info', 'warning', 'danger', 'default'][Math.floor(Math.random() * 5)]
             },
             getTags () {
-                this.$Axios.get('/tags').then(res => {
+                this.$Axios.get('/tag/all').then(res => {
                     this.tags = res.content
                 })
             },
@@ -57,14 +57,14 @@
                     return false
                 }
                 this.subLoading = true
-                this.$Axios.post('newTag', { name: this.newTag }).then(res => {
+                this.$Axios.post('tag/create', { name: this.newTag }).then(res => {
                     this.$message.success(res.msg)
                     this.getTags()
                 }).finally(() => { this.subLoading = false })
             },
             deleteTag (id, index) {
                 this.tags.splice(index, 1)
-                this.$Axios.delete('/deleteTag', { id: id }).then(res => {
+                this.$Axios.delete('/tag/delete', { id: id }).then(res => {
                     this.$message.success(res.msg)
                 })
             }

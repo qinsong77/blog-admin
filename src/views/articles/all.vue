@@ -80,7 +80,7 @@
                             @click="handleDelete(scope.$index, scope.row)">删除</el-button>
                         <el-button
                                 size="mini"
-                                type="info"
+                                type="warning"
                                 @click="handleEdit(scope.$index, scope.row)">修改</el-button>
                     </template>
                 </el-table-column>
@@ -134,12 +134,12 @@
                 return ['success', 'info', 'warning', 'danger', 'default'][Math.floor(Math.random() * 5)]
             },
             getTags () {
-                this.$Axios.get('/tags').then(res => {
+                this.$Axios.get('/tag/all').then(res => {
                     this.tags = res.content
                 })
             },
             getDirs () {
-                this.$Axios.get('/queryDir').then(res => {
+                this.$Axios.get('/dir/all').then(res => {
                     this.dirs = res.content
                 })
             },
@@ -153,7 +153,7 @@
             },
             getArticles (page) {
                 this.loading = true
-                this.$Axios.get('/getArticleListByPage/' + page)
+                this.$Axios.get('/article/page/' + page)
                     .then(res => {
                         this.items = res.content.data
                     }).finally(() => { this.loading = false })
@@ -172,7 +172,7 @@
             handleDelete (index, row) {
                 console.log(index)
                 console.log(row)
-                this.$Axios.delete('/delete/article', { id: row.id })
+                this.$Axios.delete('/article/delete', { id: row.id })
                     .then(res => {
                         this.$message.success(res.msg)
                         this.items.splice(index, 1)

@@ -4,7 +4,7 @@
     <el-dialog title="图片上传" :visible.sync="dialogVisible">
       <el-upload
         class="upload-demo"
-        action="/admin/api/fileUpload"
+        action="/admin/api/file/upload"
         ref="upload"
         :on-preview="handlePreview"
         :on-remove="handleRemove"
@@ -26,6 +26,10 @@
         border
         style="width: 100%">
         <el-table-column
+                type="index"
+                width="30">
+        </el-table-column>
+        <el-table-column
           prop="createdAt"
           label="上传日期"
           width="200">
@@ -40,6 +44,7 @@
         </el-table-column>
         <el-table-column
           prop="url"
+          min-width="400"
           label="url">
         </el-table-column>
         <el-table-column
@@ -73,7 +78,7 @@
             }
         },
         created () {
-            this.$Axios.get('/queryFiles')
+            this.$Axios.get('/file/all')
                 .then(res => {
                     console.log(res)
                     this.items = res.content.data
@@ -90,7 +95,6 @@
                 console.log(file)
             },
             uploadSuccess (response, file, fileList) {
-                console.log(response)
                 if (response.result) {
                     this.$message({
                         message: response.msg,
@@ -107,6 +111,7 @@
             },
             uploadError (err, file, fileList) {
                 console.error(err)
+                this.$message.error(err)
             },
             fileStatusChange () {
 
@@ -114,9 +119,10 @@
             handleDelete (index, row) {
                 console.log(index)
                 console.log(row)
-                this.$Axios.delete('/deleteFiles', { fileId: row.objectId })
+                this.$Axios.delete('/file/delete', { fileId: row.objectId })
                     .then(res => {
-                        console.log(res)
+                        this.$message.success(res.msg)
+                        this.items.splice(index, 1)
                     })
             }
         }
