@@ -94,6 +94,10 @@
                                         crop-button-text="确认提交"
                                         @on-crop="submitBanner"/>
                                 <div class="banner-preview" v-show="this.post.imgUrl">
+                                    <el-select v-model="deleteBanner" placeholder="是否删除原来的Banner图">
+                                        <el-option label="是" :value="true"></el-option>
+                                        <el-option label="否" :value="false"></el-option>
+                                    </el-select>
                                     <p>Banner预览：</p>
                                     <canvas  id="canvas" alt="Banner预览"/>
                                 </div>
@@ -121,6 +125,7 @@
         data () {
             return {
                 type: '撰写',
+                deleteBanner: true,
                 initialValue: '',
                 imgSubmitBtbLoading: false,
                 ImageSrc: '',
@@ -156,17 +161,7 @@
                     this.initialValue = res.content.content
                     this.post.checkTagList = res.content.tags.map(item => item.name)
                     this.post.checkDirList = res.content.dirs.map(item => item.name)
-                    const img = new Image()
-                    const canvas = document.getElementById('canvas')
-                    const ctx = canvas.getContext('2d')
-                    img.src = res.content.imgUrl
-                    img.setAttribute('crossOrigin', 'Anonymous') // 解决报错 VM20002:1 Uncaught DOMException: Failed to execute 'toDataURL' on 'HTMLCanvasElement': Tainted canvases may not be exported.
-                    img.onload = () => {
-                        canvas.width = img.width
-                        canvas.height = img.height
-                        ctx.drawImage(img, 0, 0)
-                        this.ImageSrc = canvas.toDataURL('image/jpeg')
-                    }
+                    this.setBanner(res.content.imgUrl)
                     Object.assign(this.post, res.content)
                 }).finally(() => { loading.close() })
             }
@@ -176,6 +171,19 @@
         },
 
         methods: {
+            setBanner(imgUrl){
+                const img = new Image()
+                const canvas = document.getElementById('canvas')
+                const ctx = canvas.getContext('2d')
+                img.src = imgUrl
+                img.setAttribute('crossOrigin', 'Anonymous') // 解决报错 VM20002:1 Uncaught DOMException: Failed to execute 'toDataURL' on 'HTMLCanvasElement': Tainted canvases may not be exported.
+                img.onload = () => {
+                    canvas.width = img.width
+                    canvas.height = img.height
+                    ctx.drawImage(img, 0, 0)
+                    this.ImageSrc = canvas.toDataURL('image/jpeg')
+                }
+            },
             setInitialValue (value) {
                 this.initialValue = value
             },
@@ -184,9 +192,15 @@
                 this.imgSubmitBtbLoading = true
                 const formData = new FormData()
                 formData.append('file', blob, name)
+                formData.append('articleId', this.post.id)
+                if (this.type === '修改' && this.deleteBanner) {
+                    formData.append('deleteFileId', this.post.fileId)
+                }
                 this.$Axios.post('/file/upload', formData).then(res => {
                     this.$message.success(res.msg)
                     this.post.imgUrl = res.content.url
+                    this.post.fileId = res.content.objectId
+                    this.setBanner(res.content.url)
                 }).finally(() => { this.imgSubmitBtbLoading = false })
             },
             getTags () {
