@@ -66,7 +66,7 @@ class HttpRequest {
                         duration: 10000
                     })
                 }
-                return false
+                return Promise.reject(new Error('result is false'))
             }
         }, (error) => {
             log('响应：' + url + '发生错误', error)
@@ -109,7 +109,6 @@ const $Axios = ((array) => {
         return a
     }, {})
 })(['get', 'post', 'delete', 'patch', 'put'])
-console.log($Axios)
 export default {
     install: (Vue, options) => {
         Vue.prototype.$Axios = $Axios

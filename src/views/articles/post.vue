@@ -171,7 +171,7 @@
         },
 
         methods: {
-            setBanner(imgUrl){
+            setBanner (imgUrl) {
                 const img = new Image()
                 const canvas = document.getElementById('canvas')
                 const ctx = canvas.getContext('2d')
